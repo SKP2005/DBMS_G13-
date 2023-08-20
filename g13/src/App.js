@@ -1,16 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
-import Navbar from './components/navbar';
-import LoginForm from './components/loginForm';
-import RegisterForm from './components/registerForm';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './pages/home';
 
 function App() {
   return (
-    <>
-      <Navbar/>
-      <LoginForm/>
-      <RegisterForm/>
-    </>
+    <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<Home/>}></Route>
+    </Routes>
+    </BrowserRouter>
   );
 }
 
