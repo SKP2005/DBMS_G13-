@@ -29,6 +29,7 @@ import {
   PuzzlePieceIcon,
   GiftIcon,
 } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
  
 const colors = {
   blue: "bg-blue-50 text-blue-500",
@@ -212,6 +213,14 @@ function NavList() {
  
 export function NavbarWithMegaMenu() {
   const [openNav, setOpenNav] = React.useState(false);
+  const navigate = useNavigate();
+
+  const toLogin = () => {
+    navigate("/login");
+  }
+  const toRegister = () => {
+    navigate("/register");
+  }
  
   React.useEffect(() => {
     window.addEventListener(
@@ -235,10 +244,12 @@ export function NavbarWithMegaMenu() {
           <NavList />
         </div>
         <div className="hidden gap-2 lg:flex">
-          <Button variant="text" size="sm" color="blue-gray">
+          <Button variant="text" size="sm" color="blue-gray"
+          onClick={toLogin}>
             Sign In
           </Button>
-          <Button variant="gradient" size="sm">
+          <Button variant="gradient" size="sm"
+          onClick={toRegister}>
             Sign Up
           </Button>
         </div>
@@ -258,10 +269,12 @@ export function NavbarWithMegaMenu() {
       <Collapse open={openNav}>
         <NavList />
         <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
-          <Button variant="outlined" size="sm" color="blue-gray" fullWidth>
+          <Button variant="outlined" size="sm" color="blue-gray" fullWidth
+          onClick={toLogin}>
             Sign In
           </Button>
-          <Button variant="gradient" size="sm" fullWidth >
+          <Button variant="gradient" size="sm" fullWidth 
+          onClick={toRegister}>
             Sign Up
           </Button>
         </div>
