@@ -3,12 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/home';
 import LoginForm from './components/loginForm';
 import RegisterForm from './components/registerForm';
-import { NavbarWithMegaMenu } from './components/navbar';
 
 function App() {
   return (
     <BrowserRouter>
-    <NavbarWithMegaMenu/>
     <Routes>
       <Route path='/' element={<Home/>}></Route>
       <Route path='/login' element={<LoginForm/>}></Route>

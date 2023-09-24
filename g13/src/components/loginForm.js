@@ -12,6 +12,7 @@ import {
   MDBCheckbox
 }
 from 'mdb-react-ui-kit';
+import NavbarWithMegaMenu from './navbar';
 
 export default function LoginForm() {
 
@@ -26,8 +27,9 @@ export default function LoginForm() {
   };
 
   return (
+    <div>
+      <NavbarWithMegaMenu/>
     <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
-
       <MDBTabs pills justify className='mb-3 d-flex flex-row justify-content-between'>
         <MDBTabsItem>
           <MDBTabsLink onClick={() => handleJustifyClick('tab1')} active={justifyActive === 'tab1'}>
@@ -124,6 +126,7 @@ export default function LoginForm() {
       </MDBTabsContent>
 
     </MDBContainer>
+    </div>
   );
 }
 
