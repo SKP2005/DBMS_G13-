@@ -1,11 +1,13 @@
 import '../App.css';
 import "./home.css";
 import NavbarWithMegaMenu from '../components/navbar';
+import Footer from '../components/footer';
+import { Team } from '../components/team';
 
 function Home() {
   return (
     <>
-    
+    <div className='ho'>
     <section class="text-black-1000 body-font text-3xl font-bold">
       <NavbarWithMegaMenu/>
   <div class="container px-5 py-24 mx-auto">
@@ -22,6 +24,10 @@ function Home() {
 </section>
             
 <div class="waves"></div>
+<div class="sp"></div>
+<Team/>
+<Footer/>
+</div>
     </>
   );
 }
