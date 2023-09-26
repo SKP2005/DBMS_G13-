@@ -13,7 +13,7 @@ export default function RegisterForm() {
    
       <section class="bg-white dark:bg-gray-900">
     <div class="flex justify-center min-h-screen">
-        <div class="loimg hidden bg-cover lg:block lg:w-2/5" >
+        <div class="loimg hidden bg-cover lg:block lg:w-3/5" >
         </div>
 
         <div class="flex items-center w-full max-w-3xl p-8 mx-auto lg:px-12 lg:w-3/5">

@@ -145,7 +145,7 @@ function NavListMenu() {
         allowHover={true}
       >
         <MenuHandler>
-          <Typography as="div" variant="small" className="font-normal">
+          <Typography as="div" variant="small" className="font-normal ">
             <ListItem
               className="flex items-center gap-2 py-2 pr-4"
               selected={isMenuOpen || isMobileMenuOpen}
@@ -185,7 +185,7 @@ function NavList() {
       <Typography
         as="a"
         href="#"
-        variant="small"
+        // variant="small"
         color="blue-gray"
         className="font-normal"
       >
@@ -230,7 +230,7 @@ export function NavbarWithMegaMenu() {
   }, []);
  
   return (
-    <Navbar className="mx-auto mt-1 max-w-screen-xl px-4 py-2">
+    <Navbar className="mx-auto mt-1 max-w-screen-xl px-4 py-2 rounded-md">
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography
           as="a"
@@ -238,19 +238,19 @@ export function NavbarWithMegaMenu() {
           variant="h6"
           className="mr-4 cursor-pointer py-1.5 lg:ml-2"
         >
-          Material Tailwind
+          IITI Counselling
         </Typography>
         <div className="hidden lg:block">
           <NavList />
         </div>
         <div className="hidden gap-2 lg:flex">
-          <Button variant="text" size="sm" color="blue-gray"
+          <Button variant="outlined" size="sm" color="blue-gray"
           onClick={toLogin}>
-            Sign In
+            Login
           </Button>
-          <Button variant="gradient" size="sm"
+          <Button variant="outlined" size="sm" color="blue-gray"
           onClick={toRegister}>
-            Sign Up
+            Register
           </Button>
         </div>
         <IconButton
@@ -271,11 +271,11 @@ export function NavbarWithMegaMenu() {
         <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
           <Button variant="outlined" size="sm" color="blue-gray" fullWidth
           onClick={toLogin}>
-            Sign In
+            Login
           </Button>
-          <Button variant="gradient" size="sm" fullWidth 
+          <Button variant="outlined" size="sm" fullWidth 
           onClick={toRegister}>
-            Sign Up
+            Register
           </Button>
         </div>
       </Collapse>
