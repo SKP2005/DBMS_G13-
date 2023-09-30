@@ -1,40 +1,71 @@
-CREATE SCHEMA counselling;
+-- Create the "counselling" database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS counselling;
 USE counselling;
 
-CREATE TABLE users (
-	id INT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    user_password VARCHAR(255) NOT NULL,
-    user_role VARCHAR(255)
+-- Create the "roles" table to store user roles
+CREATE TABLE roles (
+    role_id INT PRIMARY KEY AUTO_INCREMENT,
+    role_name VARCHAR(50) NOT NULL UNIQUE
 );
 
+-- Populate the roles table with some initial roles
+INSERT INTO roles (role_name) VALUES ('counselee'), ('counsellor'), ('admin');
+
+-- Create the "user" table to store user information
+CREATE TABLE user (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    user_password VARCHAR(255) NOT NULL
+);
+
+-- Create the "user_roles" table to associate users with roles
+CREATE TABLE user_roles (
+    user_id INT,
+    role_id INT,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (role_id) REFERENCES roles(role_id)
+);
+
+-- Create the "user_details" table to store additional user details
 CREATE TABLE user_details (
-	id INT PRIMARY KEY,
-    name VARCHAR(255),
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
     address VARCHAR(255),
-    contact_no INT,
-    email_id VARCHAR(255),
+    contact_no VARCHAR(20),
+    email_id VARCHAR(100),
     photo VARCHAR(255),
-    gender VARCHAR(255),
-    age INT, 
-    info LONGTEXT,
-    FOREIGN KEY(id) REFERENCES users(id)
+    gender ENUM('male', 'female', 'other'),
+    age INT,
+    info TEXT,
+    FOREIGN KEY (id) REFERENCES user(id)
 );
 
+-- Create the "payments" table to store payment details
+CREATE TABLE payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    amount DECIMAL(10, 2) NOT NULL,
+    payment_date DATE NOT NULL,
+    payment_status ENUM('pending', 'completed', 'cancelled') DEFAULT 'pending'
+);
+
+-- Create the "transactions" table to store booking and payment information
 CREATE TABLE transactions (
-	booking_id INT PRIMARY KEY, 
-    payment_id INT
+    booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    payment_id INT,
+    FOREIGN KEY (payment_id) REFERENCES payments(payment_id)
 );
 
+-- Create the "sessions" table to store counseling sessions
 CREATE TABLE sessions (
-	booking_id INT PRIMARY KEY,
-	counselee_id INT,
+    session_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT,
+    counselee_id INT,
     counsellor_id INT,
-    session_date DATE,
-    session_time TIME,
-    counselling_status VARCHAR(255),
-    counselling_fee INT,
-    FOREIGN KEY(counselee_id) REFERENCES users(id),
-    FOREIGN KEY(counsellor_id) REFERENCES users(id),
-    FOREIGN KEY(booking_id) REFERENCES transactions(booking_id)
+    session_datetime DATETIME,
+    counseling_status ENUM('scheduled', 'in_progress', 'completed', 'cancelled') DEFAULT 'scheduled',
+    counseling_fee DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (booking_id) REFERENCES transactions(booking_id),
+    FOREIGN KEY (counselee_id) REFERENCES user(id),
+    FOREIGN KEY (counsellor_id) REFERENCES user(id)
 );

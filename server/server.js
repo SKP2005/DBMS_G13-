@@ -1,11 +1,10 @@
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
-
+const jwt = require("jsonwebtoken")
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -22,13 +21,22 @@ app.use(
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const db = mysql.createConnection({
-  user: "root",
-  host: "localhost",
-  password: "",
-  database: "employeesystem",
+const db = require("./app/models");
+const Role = db.role;
+
+db.sequelize.sync({force: true}).then(() => {
+  console.log('Drop and Resync Db');
 });
 
-app.listen(3001, () => {
-    console.log("Yey, your server is running on port 3001");
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the application." });
+});
+
+require('./app/routes/auth.routes')(app);
+require('./app/routes/user.routes')(app);
+
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+    console.log(`Yey, your server is running on port ${PORT}`);
   });
