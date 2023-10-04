@@ -3,6 +3,7 @@ import NavbarWithMegaMenu from '../components/navbar';
 import Footer from '../components/footer';
 import { Team } from '../components/team';
 import {Testimonnials} from '../components/testimonnials';
+import Stats from "../components/stats";
 
 function Home() {
   return (
@@ -27,6 +28,7 @@ function Home() {
 <div class="sp"></div>
 <Team/>
 <Testimonnials/>
+<Stats/>
 <Footer/>
 </div>
     </>
