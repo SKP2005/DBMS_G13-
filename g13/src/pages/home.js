@@ -1,8 +1,8 @@
-import '../App.css';
 import "./home.css";
 import NavbarWithMegaMenu from '../components/navbar';
 import Footer from '../components/footer';
 import { Team } from '../components/team';
+import {Testimonnials} from '../components/testimonnials';
 
 function Home() {
   return (
@@ -26,6 +26,7 @@ function Home() {
 <div class="waves"></div>
 <div class="sp"></div>
 <Team/>
+<Testimonnials/>
 <Footer/>
 </div>
     </>
