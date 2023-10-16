@@ -1,5 +1,5 @@
 -- Create the "counselling" database if it doesn't exist
-CREATE DATABASE IF NOT EXISTS counselling;
+CREATE DATABASE IF NOT EXISTS counsellinguser;
 USE counselling;
 
 -- Create the "roles" table to store user roles
@@ -29,19 +29,23 @@ CREATE TABLE user_roles (
 
 -- Create the "user_details" table to store additional user details
 CREATE TABLE user_details (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY auto_increment,
     name VARCHAR(100),
+    username VARCHAR(100),
+	password VARCHAR(100),
     address VARCHAR(255),
-    contact_no VARCHAR(20),
+    contact_no INT,
     email_id VARCHAR(100),
     photo VARCHAR(255),
+    is_counc BOOLEAN DEFAULT FALSE,
     gender ENUM('male', 'female', 'other'),
     age INT,
-    info TEXT,
-    FOREIGN KEY (id) REFERENCES user(id)
+    info TEXT
+
 );
 
--- Create the "payments" table to store payment details
+DROP TABLE user_details;
+-- Create the "payments" table to store payment detailsuser_detailsuser_details
 CREATE TABLE payments (
     payment_id INT PRIMARY KEY AUTO_INCREMENT,
     amount DECIMAL(10, 2) NOT NULL,

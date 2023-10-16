@@ -1,11 +1,31 @@
 import NavbarWithMegaMenu from './navbar';
 import "./componentcss.css";
 import React, { useState } from 'react';
+import axios from 'axios';
 
 export default function RegisterForm() {
+axios.defaults.withCredentials=true;
+
+
+const [credentials, setCredentials] = useState({
+    username: undefined,
+    password: undefined,
+  });
+    const handleChange = (e) => {
+      setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    };
+
+
+    
 
   const [type, setType] = useState(false);
+  const handleClick=async (e)=>{
+    e.preventDefault();
 
+    const res=await axios.post('http://localhost:3001/auth/register',{username:"ris",password:"ris",name:"xdadasz",contact_no:1233333455,email_id:"xyz@gmss"});
+    console.log(res);
+  }
+//   axios.get('https://localhost:3001/auth/login1');
   return (
     <div>
       {/* <NavbarWithMegaMenu/> */}
@@ -54,12 +74,12 @@ export default function RegisterForm() {
 
                 <form class="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2">
                     <div>
-                        <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">First Name</label>
+                        <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200"> Name</label>
                         <input type="text" placeholder="John" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                     </div>
 
                     <div>
-                        <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Last name</label>
+                        <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">username</label>
                         <input type="text" placeholder="Snow" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                     </div>
 
@@ -83,7 +103,7 @@ export default function RegisterForm() {
                         <input type="password" placeholder="Enter your password" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                     </div>
 
-                    <button
+                    <button onClick={handleClick}
                         class="flex items-center justify-between w-full px-6 py-3 text-sm tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                         <span>Register </span>
 
@@ -93,7 +113,7 @@ export default function RegisterForm() {
                                 clip-rule="evenodd" />
                         </svg>
                     </button>
-                    <p class="mt-6 text-sm text-center text-gray-400">Already have an account ! <a href="/login" class="text-blue-500 focus:outline-none focus:underline hover:underline">Login</a>.</p>
+                    <p class="mt-6 text-sm text-center text-gray-400">Already have an account ! <a href="/login" class="text-blue-500 focus:outline-none focus:underline hover:underline" >Login</a>.</p>
                 </form>
             </div>
         </div>
