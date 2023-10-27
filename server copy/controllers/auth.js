@@ -35,9 +35,11 @@ module.exports.register = async (req, res, next) => {
 
 module.exports.login = async (req, res, next) => {
     try {
-
+console.log("helloooo");
+const username=req.body.username;
+const password=req.body.password;
         db.query(
-            "SELECT * FROM user_details WHERE username = ?;",
+            "SELECT * FROM user_details WHERE username = ?",
             username,
             (err, result) => {
               if (err) {
@@ -50,23 +52,36 @@ module.exports.login = async (req, res, next) => {
                 bcrypt.compare(password, result[0].password, (error, response) => {
                   if (response) {
                     // req.session.user = result;
-                    // console.log(req.session.user);
+                    console.log(response);
+                 
+                    result=result[0];
                     // res.send(result);
-
+                    console.log(result);
                     const token = jwt.sign(
-                        { id: response._id, isCouncellor: response.isCouncellor },
-                        process.env.JWT,
+                        { id: result._id, isCouncellor: result.is_counc },
+                        "gdfgdfg",
                         {
                             expiresIn:"2h"
                         }
                     );      
                     //   ---> PASS THE TOKEN IN FRONTEND AND TO BE STORED AS A COOKIE
-                       
+                    console.log("token generated");  
                 
-            
-                    const { password,isCouncellor,...otherDetails } = response._doc;
-            
-                    res.status(200).json({details:{...otherDetails},isAdmin, token});
+                   console.log(token);
+                    // const { password,isCouncellor,...otherDetails } = doc;
+                   const doc={
+                    name: result.name,
+                  username: result.username,
+                address: result.address,
+                contact_no: result.contact_no,
+                  email_id: result.email_id,
+                  photo: result.photo,
+                 is_counc: result.is_counc,
+                 gender: result.gender,
+                  age: result.age,
+                  info: result.info
+                   }
+                    res.status(200).json({doc,isCouncellor: result.is_counc, token});
                     
                   } else {
                     res.send({ message: "Wrong password !" });

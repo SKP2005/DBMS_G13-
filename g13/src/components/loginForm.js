@@ -1,18 +1,92 @@
 import React, { useState } from 'react';
 import NavbarWithMegaMenu from './navbar';
 import "./componentcss.css";
+import { useContext } from "react";
+import {AuthContext} from "../context/AuthContext";
+import { useNavigate} from "react-router-dom";
 import axios from 'axios';
 
-export default function LoginForm() {
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+export default function LoginForm() {
+    
+const navigate=useNavigate(); 
+    const { loading, error, dispatch, login } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
+    const [credentials, setCredentials] = useState({
+        username: undefined,
+        password: undefined,
+      });
+        const handleChange = (e) => {
+          setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+        };
   const [type, setType] = useState(false);
-  const handleClick=(e)=>{
-    e.preventdefault();
-    const req=axios.post('https://localhost:3001/auth/login',{password:"ris",username:"ris"});
-    console.log(req);
+
+  
+
+  const handleClick=async (e)=> {
+    e.preventDefault();
+    console.log(credentials);
+   
+
+    dispatch({ type: "LOGIN_START" });
+    setIsLoading(true);
+    try {
+        const res=await axios.post('http://localhost:3001/auth/login',{username:credentials.username,password:credentials.password});
+        console.log(res);
+      toast.success("Login Successfull", {
+        position: toast.POSITION.TOP_CENTER
+    });
+    // const {token, details}=res.data;
+    // login(token, details);
+    localStorage.setItem('jwtToken', res.data.token);
+
+    if (res.data.isCouncellor || !res.data.isCouncellor) {
+      dispatch({ type: 'LOGIN_SUCCESS', payload: res.data.doc });
+      toast.success('Login Successful', { position: toast.POSITION.TOP_CENTER });
+      
+      // Delay navigation by 1 second to show loader
+      setTimeout(() => {
+        setIsLoading(false);
+        navigate('/');
+      }, 1000);
+    }  else {
+       
+        dispatch({
+          type: "LOGIN_FAILURE",
+          payload: { message: "You are not allowed!" },
+          
+        });
+      
+      }
+    } catch (err) {
+      toast.error("User not found , Please try again", {
+        position: toast.POSITION.TOP_CENTER
+    });
+    console.log(err);
+      dispatch({ type: "LOGIN_FAILURE", payload: err.res.data });
+      setIsLoading(false);
+    
+    }
+
+
+
+
+
+
+
+
   }
 
   return (
+    <>
+      <ToastContainer />
+
+      {isLoading ? (
+       <div class="loader"></div>
+      ) : (
+        <>
     <div>
       {/* <NavbarWithMegaMenu/> */}
 
@@ -61,13 +135,13 @@ export default function LoginForm() {
                 <form class="grid grid-cols-1 gap-6 mt-8  md:grid-cols-2">
              
                     <div>
-                        <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Email address</label>
-                        <input type="email" placeholder="johnsnow@example.com" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                        <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Username</label>
+                        <input type="text" id='username' placeholder="johnsnow@example.com" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" onChange={handleChange}/>
                     </div>
 
                     <div>
                         <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Password</label>
-                        <input type="password" placeholder="Enter your password" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                        <input type="password" placeholder="Enter your password" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" id='password' onChange={handleChange} />
                     </div>
 
 
@@ -87,7 +161,9 @@ export default function LoginForm() {
         </div>
     </div>
 </section>
-    </div>
+    </div> </>
+      )}
+    </>
   );
 }
 

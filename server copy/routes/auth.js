@@ -13,8 +13,6 @@ const db = mysql.createConnection({
 
 router.post("/register", register),
 router.post("/login", login)
-router.post("/login1", ()=>{
-    console.log("hello");
-})
+
 
 module.exports=router;
