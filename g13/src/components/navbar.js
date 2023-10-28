@@ -197,7 +197,7 @@ function NavList() {
       <NavListMenu />
       <Typography
         as="a"
-        href="#"
+        href="/chatting"
         variant="small"
         color="blue-gray"
         className="font-normal"
