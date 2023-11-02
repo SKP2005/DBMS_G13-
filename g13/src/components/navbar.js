@@ -46,67 +46,68 @@ const colors = {
   pink: "bg-pink-50 text-pink-500",
 };
 
+
+ 
+
+
+ 
+
+
+ 
+
+
+
 const navListMenuItems = [
   {
     color: "blue",
     icon: FlagIcon,
-    title: "About us",
-    description: "Learn about our story and our mission statement.",
+    title: "Clinical Therapy",
+    description: "Deals with mental health disorders and coping techniques.",
   },
   {
     color: "orange",
     icon: ChatBubbleOvalLeftIcon,
-    title: "Press",
-    description: "News and writings, press releases, and resources",
+    title: "Behavioural Therapy",
+    description: "Recognise the trouble behaviour and change it for good",
   },
   {
     color: "green",
     icon: UsersIcon,
-    title: (
-      <div className="flex items-center gap-1">
-        Careers{" "}
-        <Chip
-          size="sm"
-          color="green"
-          variant="ghost"
-          value="We're hiring!"
-          className="capitalize"
-        />
-      </div>
-    ),
-    description: "We are always looking for talented people. Join us!",
+    title: "Sleep Disorders",
+    description: "Irregular sleep patterns with less sleep duration",
   },
   {
     color: "blue-gray",
     icon: FolderIcon,
-    title: "Legal",
-    description: "All the stuff that we dan from legal made us add.",
+    title: "Depression",
+    description: "An elongated feeling of sadness with decreased pleasure.",
   },
   {
     color: "purple",
     icon: RocketLaunchIcon,
-    title: "Products",
-    description: "Checkout our products that helps a startup running.",
+    title: "Anxiety",
+    description: "State of heightened arousal that occurs frequently.",
   },
   {
     color: "teal",
     icon: FaceSmileIcon,
-    title: "Icons",
-    description: "Set of beautiful icons that you can use in your project.",
+    title: "PTSD",
+    description: "Stressful episodes that occur after a traumatic experience.",
   },
   {
     color: "cyan",
     icon: PuzzlePieceIcon,
-    title: "UI Kits",
-    description: "High quality UI Kits helps you to 2x faster.",
+    title: "Bipolar",
+    description: "Frequent behaviour swings between depression.",
   },
   {
     color: "pink",
     icon: GiftIcon,
-    title: "Open Source",
-    description: "List of all our open-source projects, it's all free.",
+    title: "Behavioural Disorders",
+    description: "Characterized by patterns of disruptive behvaiour.",
   },
 ];
+
 
 function NavListMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -156,7 +157,7 @@ function NavListMenu() {
               onClick={() => setIsMobileMenuOpen((cur) => !cur)}
             >
               <Square3Stack3DIcon className="h-[18px] w-[18px]" />
-              Resources
+              Services
               <ChevronDownIcon
                 strokeWidth={2.5}
                 className={`hidden h-3 w-3 transition-transform lg:block ${
