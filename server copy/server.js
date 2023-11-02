@@ -8,6 +8,7 @@ const session = require("express-session");
 const AuthRoute=require('./routes/auth');
 const CouRoute=require('./routes/counc');
 const BookRoute=require('./routes/book');
+const PaymentRoute=require("./routes/payment")
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -45,7 +46,7 @@ const db = mysql.createConnection({
 app.use('/auth', AuthRoute);
 app.use('/cou', CouRoute);
 app.use('/book', BookRoute);
-
+app.use('/pay', PaymentRoute);
 
 app.listen(3001, () => {
     console.log("Yey, your server is running on port 3001");

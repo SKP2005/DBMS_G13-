@@ -1,5 +1,5 @@
 const express=require("express");
-const {Booked}= require("../controllers/book");
+const {Booked,ConfirmationMail}= require("../controllers/book");
 
 const router=express.Router();
 const mysql = require("mysql");
@@ -13,7 +13,7 @@ const db = mysql.createConnection({
 
 
 router.post("/booked", Booked),
-// router.post("/login", login)
+router.post("/mail", ConfirmationMail);
 
 
 module.exports=router;

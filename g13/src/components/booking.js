@@ -3,11 +3,14 @@ import { Datepicker, Input, initTE, Timepicker } from "tw-elements";
 import { AuthContext } from "../context/AuthContext";
 import axios from 'axios';
 import DatePicker from "react-datepicker";
+import { ToastContainer, toast } from 'react-toastify';
 
 import "react-datepicker/dist/react-datepicker.css";
+// import { ToastContainer } from "react-toastify";
 
 export const Booking = ({id}) => {
   // console.log("prop"+id);
+  const [loader,setLoading]=useState(false);
   const [inputtime, setInputtime] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const {user}=useContext(AuthContext);
@@ -26,29 +29,134 @@ export const Booking = ({id}) => {
       //     disablePast: true,
       //   });
       // });
-
-      const handleClick= async ()=>{
-        const response = await axios.post(`http://localhost:3001/cou/getuser`,{username:user.username});
-        // console.log(response.data[0]);
-        const data={
-          counselee_id :response.data[0].id,
-          counsellor_id :parseInt(id),
-          session_date :startDate,
-        session_time : inputtime,
-        counseling_fee :parseInt(price)
-        }
-        // console.log(data);
-        const book = await axios.post("http://localhost:3001/book/booked",{data});
-        console.log(book);
-      }
+      
+    
 
       const onChange2 = (event) => {
         setInputtime(event.target.value);
         console.log(event.target.value);
       }
+
+
+      
+const loadRazorpay=()=> {
+  const script = document.createElement('script');
+  script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+  script.onerror = () => {
+    alert('Razorpay SDK failed to load. Are you online?');
+   
+  };
+  script.onload = async () => {
+    try {
+      // setOrderAmount(price);
+      // setLoading(true);
+      const result = await axios.post('http://localhost:3001/pay/create-order', {
+        amount: parseInt(price) + '00' ,
+      });
+      console.log(result);
+      const { amount, id: order_id, currency } = result.data;
+      const {
+        data: { key: razorpayKey },
+      } = await axios.get('http://localhost:3001/pay/get-razorpay-key');
+
+      const options = {
+        key: razorpayKey,
+        amount: amount.toString(),
+        currency: currency,
+        name: 'example name',
+        description: 'example transaction',
+        order_id: order_id,
+        handler: async function (response) {
+          const result = await axios.post('http://localhost:3001/pay/pay-order', {
+            amount: amount,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+          });
+          alert(result.data.msg);
+          if(result.data.success){
+            handleClick(result.data.orderId);
+          }
+          // fetchOrders();
+        },
+        prefill: {
+          name: 'example name',
+          email: 'email@example.com',
+          contact: '111111',
+        },
+        notes: {
+          address: 'example address',
+        },
+        theme: {
+          color: '#80c0f0',
+        },
+      };
+
+      setLoading(false);
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+      console.log(paymentObject)
+      
+
+     
+
+
+    } catch (err) {
+      alert(err);
+      setLoading(false);
+    }
+  };
+  document.body.appendChild(script);
+}
+
+
+const handleMail=async ()=>{
+  console.log("hi");
+  try {
+    // const {data}= useFetch('http://localhost:3001/cou/counc');
+    const response = await axios.post(`http://localhost:3001/cou/getcounc`,{id});
+    const counce=response.data[0];
+    
+    // toast.success('Tickets Booked Succesfully ..Please check your registered Email for more details', {
+    //   position: toast.POSITION.TOP_CENTER
+    // });
+  console.log("hi");
+    const res=await axios.post("http://localhost:3001/book/mail",{user,counce,startDate,inputtime});
+console.log(res);
+    // closeModal(false);
+      
+  }
+ catch(err){
+    console.log(err);
+ }
+}
+
+
+
+const handleClick= async ()=>{
+  loadRazorpay();
+  handleMail();
+  const response = await axios.post(`http://localhost:3001/cou/getuser`,{username:user.username});
+  // console.log(response.data[0]);
+  const data={
+    counselee_id :response.data[0].id,
+    counsellor_id :parseInt(id),
+    session_date :startDate,
+  session_time : inputtime,
+  counseling_fee :parseInt(price)
+  }
+  // console.log(data);
+  const book = await axios.post("http://localhost:3001/book/booked",{data});
+  console.log(book);
+ 
+ 
+}
+
     
   return (
+   
     <div class="mt-3">
+       <ToastContainer/>
         {/* <div
           class="relative mb-3"
           id="datepicker-disable-past"
