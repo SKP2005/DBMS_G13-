@@ -18,8 +18,8 @@ module.exports.register = async (req, res, next) => {
  console.log("passed");
 
         db.query(
-            "INSERT INTO user_details (username,name,contact_no,email_id,password) VALUES (?,?,?,?,?)",
-            [req.body.username,req.body.name,req.body.contact_no,req.body.email_id, hash],
+            "INSERT INTO user_details (username,name,contact_no,email_id,password,is_counc) VALUES (?,?,?,?,?,?)",
+            [req.body.username,req.body.name,req.body.contact_no,req.body.email_id, hash,req.body.is_counc],
             (err, result) => {
               console.log(err);
               console.log(result);

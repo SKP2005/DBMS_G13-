@@ -12,8 +12,10 @@ const [credentials, setCredentials] = useState({
     password: undefined,
     name:undefined,
     contact_no:undefined,
-    email_id:undefined
+    email_id:undefined,
+    
   });
+ 
     const handleChange = (e) => {
       setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
     };
@@ -25,7 +27,7 @@ const [credentials, setCredentials] = useState({
   const handleClick=async (e)=>{
     e.preventDefault();
 
-    const res=await axios.post('http://localhost:3001/auth/register',{username:credentials.username,password:credentials.password,name:credentials.name,contact_no:credentials.contact_no,email_id:credentials.email_id});
+    const res=await axios.post('http://localhost:3001/auth/register',{username:credentials.username,password:credentials.password,name:credentials.name,contact_no:credentials.contact_no,email_id:credentials.email_id,is_counc:type});
     console.log(res);
   }
 //   axios.get('https://localhost:3001/auth/login1');
@@ -59,7 +61,7 @@ const [credentials, setCredentials] = useState({
                             </svg>
 
                             <span class="mx-2">
-                                client
+                                Client
                             </span>
                         </button>
 
@@ -69,7 +71,7 @@ const [credentials, setCredentials] = useState({
                             </svg>
 
                             <span class="mx-2">
-                                worker
+                                Councellor
                             </span>
                         </button>
                     </div>

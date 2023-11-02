@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Navbar,
   Collapse,
@@ -30,6 +30,9 @@ import {
   GiftIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
  
 const colors = {
   blue: "bg-blue-50 text-blue-500",
@@ -214,13 +217,24 @@ function NavList() {
 export function NavbarWithMegaMenu() {
   const [openNav, setOpenNav] = React.useState(false);
   const navigate = useNavigate();
-
+  const {user,dispatch, logout} =useContext(AuthContext);
+  console.log(user);
   const toLogin = () => {
     navigate("/login");
   }
   const toRegister = () => {
     navigate("/register");
   }
+  const handleClick=()=>{
+   
+    toast.info('Logout Succesfully ', {
+      position: toast.POSITION.TOP_CENTER
+  });
+  dispatch({ type: "LOGOUT" });
+   logout();
+    navigate.push("/login");
+
+}
  
   React.useEffect(() => {
     window.addEventListener(
@@ -243,16 +257,29 @@ export function NavbarWithMegaMenu() {
         <div className="hidden lg:block">
           <NavList />
         </div>
-        <div className="hidden gap-2 lg:flex">
-          <Button variant="outlined" size="sm" color="blue-gray"
-          onClick={toLogin}>
-            Login
-          </Button>
-          <Button variant="outlined" size="sm" color="blue-gray"
-          onClick={toRegister}>
-            Register
-          </Button>
-        </div>
+     
+        {  user ? (
+       <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
+       <Button variant="outlined" size="sm" color="blue-gray" fullWidth
+       onClick={handleClick}>
+         Logout
+       </Button>
+       <span>{user.username}</span>
+     </div>
+        ) : 
+        <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
+        <Button variant="outlined" size="sm" color="blue-gray" fullWidth
+        onClick={toLogin}>
+          Login
+        </Button>
+        <Button variant="outlined" size="sm" fullWidth 
+        onClick={toRegister}>
+          Register
+        </Button>
+      </div>
+       
+          }
+        
         <IconButton
           variant="text"
           color="blue-gray"
@@ -268,16 +295,27 @@ export function NavbarWithMegaMenu() {
       </div>
       <Collapse open={openNav}>
         <NavList />
+        {  user ? (
+       <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
+       <Button variant="outlined" size="sm" color="blue-gray" fullWidth
+       onClick={handleClick}>
+         Logout
+       </Button>
+       <span>{user.username}</span>
+     </div>
+        ) : 
         <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
-          <Button variant="outlined" size="sm" color="blue-gray" fullWidth
-          onClick={toLogin}>
-            Login
-          </Button>
-          <Button variant="outlined" size="sm" fullWidth 
-          onClick={toRegister}>
-            Register
-          </Button>
-        </div>
+        <Button variant="outlined" size="sm" color="blue-gray" fullWidth
+        onClick={toLogin}>
+          Login
+        </Button>
+        <Button variant="outlined" size="sm" fullWidth 
+        onClick={toRegister}>
+          Register
+        </Button>
+      </div>
+       
+          }
       </Collapse>
     </Navbar>
   );

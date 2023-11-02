@@ -1,8 +1,32 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import NavbarWithMegaMenu from '../../components/navbar';
 import Booking from '../../components/booking';
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
 
 function Democouns() {
+  const {user}=useContext(AuthContext);
+ 
+  console.log(user);
+  const location = useLocation();
+  const [counc,setCounc]=useState(undefined);
+  const id = location.pathname.split("/")[2];
+  console.log(id);
+    useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(`http://localhost:3001/cou/getcounc`,{id});
+        console.log(response.data[0]);
+        setCounc(response.data[0]);
+       
+      } catch (error) {
+       console.log(error)
+      }}
+      fetchData();
+    },[]);
+    console.log(counc)
   return (
     <div>
         <NavbarWithMegaMenu/>
@@ -19,7 +43,7 @@ function Democouns() {
                 class="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center"
               ></div>
 
-              <h1 class="text-3xl font-bold pt-8 lg:pt-0">Dr. Agastha</h1>
+              <h1 class="text-3xl font-bold pt-8 lg:pt-0">{counc?.name}</h1>
               <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
               <p class="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
                 {" "}
@@ -39,7 +63,7 @@ function Democouns() {
                 achieve emotional well-being.
               </p>
 
-              <Booking/>
+              <Booking id={id}/>
 
               {/* <!-- Use https://simpleicons.org/ to find the svg for your preferred product -->  */}
             </div>

@@ -5,7 +5,9 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const AuthRoute=require('./routes/auth')
+const AuthRoute=require('./routes/auth');
+const CouRoute=require('./routes/counc');
+const BookRoute=require('./routes/book');
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -41,7 +43,8 @@ const db = mysql.createConnection({
 });
 
 app.use('/auth', AuthRoute);
-
+app.use('/cou', CouRoute);
+app.use('/book', BookRoute);
 
 
 app.listen(3001, () => {

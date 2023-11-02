@@ -63,16 +63,16 @@ CREATE TABLE transactions (
 -- Create the "sessions" table to store counseling sessions
 CREATE TABLE sessions (
     session_id INT PRIMARY KEY AUTO_INCREMENT,
-    booking_id INT,
+    -- booking_id INT,
     counselee_id INT,
     counsellor_id INT,
-    session_date DATE,
-       session_time time,
+    session_date VARCHAR(255),
+	session_time VARCHAR(255),
     counseling_status ENUM('scheduled', 'in_progress', 'completed', 'cancelled') DEFAULT 'scheduled',
-    counseling_fee DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (booking_id) REFERENCES transactions(booking_id),
-    FOREIGN KEY (counselee_id) REFERENCES user(id),
-    FOREIGN KEY (counsellor_id) REFERENCES user(id)
+    counseling_fee INT 
+    -- FOREIGN KEY (booking_id) REFERENCES transactions(booking_id),
+   --  FOREIGN KEY (counselee_id) REFERENCES user(id),
+   --  FOREIGN KEY (counsellor_id) REFERENCES user(id)
 );
 
 DROP TABLE sessions;

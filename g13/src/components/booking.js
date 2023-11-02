@@ -1,26 +1,55 @@
-import { React,useEffect,useState } from "react";
+import { React,useContext,useEffect,useState } from "react";
 import { Datepicker, Input, initTE, Timepicker } from "tw-elements";
+import { AuthContext } from "../context/AuthContext";
+import axios from 'axios';
+import DatePicker from "react-datepicker";
 
+import "react-datepicker/dist/react-datepicker.css";
 
-export const Booking = () => {
+export const Booking = ({id}) => {
+  // console.log("prop"+id);
+  const [inputtime, setInputtime] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const {user}=useContext(AuthContext);
+  console.log(user);
   const [price,setPrice] = useState("2");
     useEffect(() => {
         initTE({ Input, Timepicker });
     
       }, []);
-      useEffect(() => {
-        initTE({ Datepicker, Input });
-        const datepickerDisablePast = document.getElementById(
-          "datepicker-disable-past"
-        );
-        new Datepicker(datepickerDisablePast, {
-          disablePast: true,
-        });
-      });
+      // useEffect(() => {
+      //   initTE({ Datepicker, Input });
+      //   const datepickerDisablePast = document.getElementById(
+      //     "datepicker-disable-past"
+      //   );
+      //   new Datepicker(datepickerDisablePast, {
+      //     disablePast: true,
+      //   });
+      // });
 
+      const handleClick= async ()=>{
+        const response = await axios.post(`http://localhost:3001/cou/getuser`,{username:user.username});
+        // console.log(response.data[0]);
+        const data={
+          counselee_id :response.data[0].id,
+          counsellor_id :parseInt(id),
+          session_date :startDate,
+        session_time : inputtime,
+        counseling_fee :parseInt(price)
+        }
+        // console.log(data);
+        const book = await axios.post("http://localhost:3001/book/booked",{data});
+        console.log(book);
+      }
+
+      const onChange2 = (event) => {
+        setInputtime(event.target.value);
+        console.log(event.target.value);
+      }
+    
   return (
     <div class="mt-3">
-        <div
+        {/* <div
           class="relative mb-3"
           id="datepicker-disable-past"
           data-te-input-wrapper-init
@@ -36,13 +65,16 @@ export const Booking = () => {
           >
             Select a date
           </label>
-        </div>
+        </div> */}
+        <div> <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /></div>
       <div
           class="relative"
           data-te-timepicker-init
           data-te-input-wrapper-init
         >
           <input
+           value={inputtime}
+           onInput={onChange2}
             type="text"
             class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
             id="form1"
@@ -111,7 +143,7 @@ export const Booking = () => {
 
     </div>
 </div>
-<button type="button" class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Book Appointment</button>
+<button onClick={handleClick} type="button" class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Book Appointment</button>
     </div>
   );
 };
