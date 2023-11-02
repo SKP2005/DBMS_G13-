@@ -33,11 +33,10 @@ export const Pricing = () => {
               </svg>
               <span className="relative">Transparent</span>
             </span>{' '}
-            pricing. Pay as you grow.
+            pricing. Pay as you heal.
           </h2>
           <p className="text-base text-gray-700 md:text-lg">
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            accusantium doloremque rem aperiam, eaque ipsa quae.
+          Our pricing is designed to make high-quality counseling services accessible to everyone, ensuring that you receive exceptional support without breaking the bank.
           </p>
         </div>
         <div className="grid max-w-md gap-10 row-gap-5 lg:max-w-screen-lg sm:row-gap-10 lg:grid-cols-3 xl:max-w-screen-lg sm:mx-auto">

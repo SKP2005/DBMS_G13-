@@ -46,7 +46,7 @@ export const Team = () => {
             our talented team of professionals
           </h2>
           <p className="text-base text-gray-700 md:text-lg">
-          But to discover where all this mistaken idea of denouncing pleasure and praising.
+          Empowering Lives, Restoring Hope.
           </p>
         </div>
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
