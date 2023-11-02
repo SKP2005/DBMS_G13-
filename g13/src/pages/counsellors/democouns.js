@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
+import Footer from '../../components/footer';
 
 function Democouns() {
   const {user}=useContext(AuthContext);
@@ -78,6 +79,7 @@ function Democouns() {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   )
 }

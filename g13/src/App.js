@@ -5,6 +5,7 @@ import LoginForm from './components/loginForm';
 import RegisterForm from './components/registerForm';
 import Democouns from './pages/counsellors/democouns';
 import Chatting from './pages/chatting';
+import Profile from './pages/profile';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path='/login' element={<LoginForm/>}></Route>
       <Route path='/register' element={<RegisterForm/>}></Route>
       <Route path='/chatting' element={<Chatting/>}></Route>
+      <Route path='/profile' element={<Profile/>}></Route>
     </Routes>
     </BrowserRouter>
   );
