@@ -58,3 +58,104 @@ module.exports.getUser = async (req, res, next) => {
       next(err);
   }
 };
+
+module.exports.getClientsOfCouncellors = async (req, res, next) => {
+  try {
+    if(req.body.is_counc==1){
+
+      db.query("SELECT * FROM sessions WHERE counsellor_id = (?)",[req.body.id
+      ], (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.status(200).send(result);
+        }
+      });
+    }
+    else{
+      db.query("SELECT * FROM sessions WHERE counselee_id = (?)",[req.body.id
+      ], (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.status(200).send(result);
+        }
+      });
+    }
+        
+  } catch (err) {
+      next(err);
+  }
+};
+
+module.exports.changeStatus = async (req, res, next) => {
+  try {
+    
+    if(req.body.status){
+      const s="accepted";
+      db.query("UPDATE sessions SET counseling_status= (?) WHERE session_id = (?)",[s,req.body.id
+      ], (err, result) => {
+          if (err) {
+            console.log(err);
+          } else {
+            res.status(200).send(result);
+          }
+        });
+
+    }
+    else{
+     const s="declined";
+      db.query("UPDATE sessions SET counseling_status= (?) WHERE session_id = (?)",[s,req.body.id
+      ], (err, result) => {
+          if (err) {
+            console.log(err);
+          } else {
+            res.status(200).send(result);
+          }
+        });
+
+    }
+    
+   
+        
+    
+  } catch (err) {
+      next(err);
+  }
+};
+
+module.exports.updatePay = async (req, res, next) => {
+  try {
+    db.query("UPDATE sessions SET payment= (?) WHERE session_id = (?)",[1,req.body.id
+    ], (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.status(200).send(result);
+        }
+      });
+
+
+  }
+   catch (err) {
+      next(err);
+  }
+}
+
+module.exports.update = async (req, res, next) => {
+  try {
+    db.query("UPDATE user_details SET photo= (?) WHERE id = (?)",[req.body.url,req.body.id
+    ], (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.status(200).send(result);
+        }
+      });
+
+
+  }
+   catch (err) {
+      next(err);
+  }
+}

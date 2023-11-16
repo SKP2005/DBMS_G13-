@@ -134,8 +134,8 @@ console.log(res);
 
 
 const handleClick= async ()=>{
-  loadRazorpay();
-  handleMail();
+  // loadRazorpay();
+  // handleMail();
   const response = await axios.post(`http://localhost:3001/cou/getuser`,{username:user.username});
   // console.log(response.data[0]);
   const data={

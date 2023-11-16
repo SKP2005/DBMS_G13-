@@ -79,6 +79,7 @@ const password=req.body.password;
                  is_counc: result.is_counc,
                  gender: result.gender,
                   age: result.age,
+                  id:result.id,
                   info: result.info
                    }
                     res.status(200).json({doc,isCouncellor: result.is_counc, token});

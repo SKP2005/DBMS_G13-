@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 import Cookies from "js-cookie";
 
 const INITIAL_STATE={
- user:JSON.parse('{"son":"of"}') || null,
+  user:JSON.parse(localStorage.getItem("user")) || null,
  loading: false,
  error:null,
 };

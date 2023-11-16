@@ -58,11 +58,12 @@ export const Team = () => {
            <Link to={`/booking/${cou.id}`}>
         <div >
         <div className="relative overflow-hidden transition duration-300 transform rounded shadow-lg lg:hover:-translate-y-2 hover:shadow-2xl">
-          <img
-            className="object-cover w-full h-56 md:h-64 xl:h-80"
+          {/* <img
+           
             src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
             alt="Person"
-          />
+          /> */}
+           {cou.photo ?<><img  className="object-cover w-full h-56 md:h-64 xl:h-80" src={cou.photo}/></> : <><img  className="object-cover w-full h-56 md:h-64 xl:h-80" src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260" class="rounded-circle" /></>}
           <div className="hid absolute inset-0 flex flex-col justify-center px-5 py-4 text-center transition-opacity duration-300 bg-black bg-opacity-75 hover:opacity-100">
             <p className="mb-1 text-lg font-bold text-gray-100">
               {cou.name}
