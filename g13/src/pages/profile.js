@@ -12,6 +12,7 @@ export const Profile = () => {
   const { user } = useContext(AuthContext);
   const [results, setResults] = useState([]);
   const [loader,setLoading]=useState(false);
+  const [history,setHistory]=useState(false);
   const [ide,setIde]=useState(undefined);
   const [file, setFile] = useState("");
   console.log(user);
@@ -187,7 +188,7 @@ console.log(user.photo);
             </form>
             <ul class="navbar-nav align-items-center d-none d-md-flex">
               <li class="nav-item dropdown">
-                <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link pr-0" href="/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div class="media align-items-center">
                     <span class="avatar avatar-sm rounded-circle">
                       <img alt="Image placeholder" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" />
@@ -248,19 +249,7 @@ console.log(user.photo);
                 <div class="row justify-content-center">
                   <div class="col-lg-3 order-lg-2">
 {/* IMAGE UPDATE */}
-                  <div className="formInput">
-                <label htmlFor="file" id= "b5b"style={{backgroundColor:'rgb(245,69,118)',color:'white', borderRadius:'5px'}} onClick={()=>{ setIsImageSelected(!isImageSelected)}}>
-                Change Image</label>
-                { isImageSelected &&
-                <label htmlFor="file" id= "b5b"style={{backgroundColor:'rgb(245,69,118)',color:'white', borderRadius:'5px'}} onClick={SubmitImage}>
-                upload</label>}
-                <input
-                  type="file"
-                  id="file"
-                  onChange={(e) => setFile(e.target.files[0])}
-                  // style={{ display: "none" }}
-                />
-              </div>
+                  
 
 
                     <div class="card-profile-image">
@@ -279,22 +268,19 @@ console.log(user.photo);
                 </div>
                 <div class="card-body pt-0 pt-md-4">
                   <div class="row">
-                    <div class="col">
-                      <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-                        <div>
-                          <span class="heading">22</span>
-                          <span class="description">Friends</span>
-                        </div>
-                        <div>
-                          <span class="heading">10</span>
-                          <span class="description">Photos</span>
-                        </div>
-                        <div>
-                          <span class="heading">89</span>
-                          <span class="description">Comments</span>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="formInput mt-5 px-2">
+                <label htmlFor="file" id= "b5b"style={{backgroundColor:'rgb(245,69,118)',color:'white', borderRadius:'5px'}} onClick={()=>{ setIsImageSelected(!isImageSelected)}}>
+                Change Image</label>
+                { isImageSelected &&
+                <label htmlFor="file" id= "b5b"style={{backgroundColor:'rgb(245,69,118)',color:'white', borderRadius:'5px'}} onClick={SubmitImage}>
+                upload</label>}
+                <input
+                  type="file"
+                  id="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  // style={{ display: "none" }}
+                />
+              </div>
                   </div>
                   <div class="text-center">
                     <h3>
@@ -410,23 +396,120 @@ console.log(user.photo);
           </div>
         </div>
       </div>
-      <button onClick={viewHistory}>viewHistory</button>
-      {results.map((result) => (<>
-        <div>,{result.payment},{result.session_id} {result.counselee_id}, {result.counsellor_id}, {result.session_date}, {result.session_time} ,{result.counseling_fee},
-          {result.counseling_status}
 
 
-          {user.is_counc == 0 ?
+
+<div class='flex justify-center mt-4'>   
+<button onClick={()=>{
+        viewHistory();
+        setHistory(!history);}} 
+  type="button" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Appointments</button>
+</div>
+
+
+          
+
+       
+
+
+{history ? <section class="container mb-5 px-4 mx-auto">
+
+
+    <div class="flex flex-col mt-6">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-800">
+                            <tr>
+        
+
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                Session-Id
+                                </th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                Counsellor
+                                </th>
+
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                Date
+                                </th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                Time
+                                </th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                Fee
+                                </th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                Status
+                                </th>
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                Status
+                                </th>
+
+                               
+                            </tr>
+                        </thead>
+
+
+
+                        {results.map((result) => (<>
+        
+                        <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                            <tr>
+                                <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                    <h4 class="text-gray-700 dark:text-gray-200">{result.session_id}</h4>
+                                </td>
+                                <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                                    <h4 class="text-gray-700 dark:text-gray-200">{result.counsellor_id}</h4>
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                    <div>
+                                        <h4 class="text-gray-700 dark:text-gray-200">{result.session_date}</h4>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                <div>
+                                        <h4 class="text-gray-700 dark:text-gray-200">{result.session_time}</h4>
+                                    </div>
+                                </td>
+                                
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                      <h4 class="text-gray-700 dark:text-gray-200">{result.counseling_fee}</h4>
+                                </td>
+
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                      <h4 class="text-gray-700 dark:text-gray-200">{result.counseling_status}</h4>
+                                </td>
+                                <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                {user.is_counc == 0 ?
               result.counseling_status == 'accepted' ?  <> {result.payment!=1 ? <button onClick={()=>{setIde(result.session_id);
-                setAmount(result.counseling_fee);handleClick(result)}}>PAY NOW</button> : <span>paid</span>} </>
-              : <><span>pending</span></>
+                setAmount(result.counseling_fee);handleClick(result)}}>PAY NOW</button> : <span class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">paid</span>} </>
+              : <><span class="inline px-3 py-1 text-sm font-normal rounded-full text-black-500 gap-x-2 bg-yellow-100/60 dark:bg-gray-800">pending</span></>
             :
 
-            result.counseling_status == 'pending' ? <><button onClick={()=>{accepti(result);}}>Accept</button> <button onClick={()=>{declined(result);}}>decline</button></> : <>{result.payment!=1 ? <span>not-paid</span> : <span>paid</span>}</>}
-
-        </div>
+            result.counseling_status == 'pending' ? <><button class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800" onClick={()=>{accepti(result);}}>Accept</button> <button class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-red-100/60 dark:bg-gray-800" onClick={()=>{declined(result);}}>decline</button></> : <>{result.payment!=1 ? <span>not-paid</span> : <span>paid</span>}</>} 
+                                </td>
+                            </tr>
+                            </tbody>
+                            
       </>
       ))}
+                            
+
+                            
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section> : <></>}
+
+
+
       <Footer />
     </body>
 
