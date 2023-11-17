@@ -1,9 +1,14 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,700");
 
+.chatbg{
+  background-image: url("../images/9ZbpYo.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .App {
     width: 100vw;
     height: 100vh;
-    background: #fff;
     color: #212121;
     font-family: "Open Sans", sans-serif;
     display: grid;

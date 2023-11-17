@@ -4,12 +4,14 @@ import { AuthContext } from "../context/AuthContext";
 import axios from 'axios';
 import DatePicker from "react-datepicker";
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 import "react-datepicker/dist/react-datepicker.css";
 // import { ToastContainer } from "react-toastify";
 
 export const Booking = ({id}) => {
   // console.log("prop"+id);
+  const navigate=useNavigate();
   const [loader,setLoading]=useState(false);
   const [inputtime, setInputtime] = useState("");
   const [startDate, setStartDate] = useState(new Date());
@@ -148,7 +150,8 @@ const handleClick= async ()=>{
   // console.log(data);
   const book = await axios.post("http://localhost:3001/book/booked",{data});
   console.log(book);
- 
+
+  navigate("/profile");
  
 }
 

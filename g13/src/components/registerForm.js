@@ -2,10 +2,11 @@ import NavbarWithMegaMenu from './navbar';
 import "./componentcss.css";
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function RegisterForm() {
 axios.defaults.withCredentials=true;
-
+const navigate=useNavigate();
 
 const [credentials, setCredentials] = useState({
     username: undefined,
@@ -29,6 +30,7 @@ const [credentials, setCredentials] = useState({
 
     const res=await axios.post('http://localhost:3001/auth/register',{username:credentials.username,password:credentials.password,name:credentials.name,contact_no:credentials.contact_no,email_id:credentials.email_id,is_counc:type});
     console.log(res);
+    navigate("/login");
   }
 //   axios.get('https://localhost:3001/auth/login1');
   return (

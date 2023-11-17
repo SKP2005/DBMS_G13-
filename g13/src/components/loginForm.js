@@ -35,9 +35,6 @@ const navigate=useNavigate();
     try {
         const res=await axios.post('http://localhost:3001/auth/login',{username:credentials.username,password:credentials.password});
         console.log(res);
-      toast.success("Login Successfull", {
-        position: toast.POSITION.TOP_CENTER
-    });
     // const {token, details}=res.data;
     // login(token, details);
     localStorage.setItem('jwtToken', res.data.token);
@@ -47,11 +44,11 @@ const navigate=useNavigate();
       toast.success('Login Successful', { position: toast.POSITION.TOP_CENTER });
       
       // Delay navigation by 1 second to show loader
+      navigate('/');
       setTimeout(() => {
         setIsLoading(false);
-        navigate('/');
       }, 1000);
-    }  else {
+    }else{
        
         dispatch({
           type: "LOGIN_FAILURE",
@@ -60,7 +57,7 @@ const navigate=useNavigate();
         });
       
       }
-    } catch (err) {
+    }catch(err){
       toast.error("User not found , Please try again", {
         position: toast.POSITION.TOP_CENTER
     });

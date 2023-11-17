@@ -19,7 +19,7 @@ function Chatting() {
       }
     };
   return (
-    <div>
+    <div className='chatbg'>
         <NavbarWithMegaMenu/>
         <div className="App">
       {!showChat ? (
