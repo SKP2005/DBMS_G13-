@@ -159,3 +159,23 @@ module.exports.update = async (req, res, next) => {
       next(err);
   }
 }
+
+
+module.exports.upcounc = async (req, res, next) => {
+  try {
+console.log(req.body);
+    db.query("UPDATE user_details SET address = (?),contact_no = (?),email_id = (?),gender = (?),age = (?),info  = (?) WHERE id = (?)",[req.body.address,req.body.contact_no,req.body.email,req.body.gender,req.body.age,req.body.info,req.body.id
+    ], (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.status(200).send(result);
+        }
+      });
+
+
+  }
+   catch (err) {
+      next(err);
+  }
+}

@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 
 import "react-datepicker/dist/react-datepicker.css";
 // import { ToastContainer } from "react-toastify";
+// import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Booking = ({id}) => {
   // console.log("prop"+id);
@@ -16,7 +18,7 @@ export const Booking = ({id}) => {
   const [inputtime, setInputtime] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const {user}=useContext(AuthContext);
-  console.log(user);
+  // console.log(user);
   const [price,setPrice] = useState("2");
     useEffect(() => {
         initTE({ Input, Timepicker });
@@ -41,77 +43,6 @@ export const Booking = ({id}) => {
 
 
       
-const loadRazorpay=()=> {
-  const script = document.createElement('script');
-  script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-  script.onerror = () => {
-    alert('Razorpay SDK failed to load. Are you online?');
-   
-  };
-  script.onload = async () => {
-    try {
-      // setOrderAmount(price);
-      // setLoading(true);
-      const result = await axios.post('http://localhost:3001/pay/create-order', {
-        amount: parseInt(price) + '00' ,
-      });
-      console.log(result);
-      const { amount, id: order_id, currency } = result.data;
-      const {
-        data: { key: razorpayKey },
-      } = await axios.get('http://localhost:3001/pay/get-razorpay-key');
-
-      const options = {
-        key: razorpayKey,
-        amount: amount.toString(),
-        currency: currency,
-        name: 'example name',
-        description: 'example transaction',
-        order_id: order_id,
-        handler: async function (response) {
-          const result = await axios.post('http://localhost:3001/pay/pay-order', {
-            amount: amount,
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpayOrderId: response.razorpay_order_id,
-            razorpaySignature: response.razorpay_signature,
-          });
-          alert(result.data.msg);
-          if(result.data.success){
-            handleClick(result.data.orderId);
-          }
-          // fetchOrders();
-        },
-        prefill: {
-          name: 'example name',
-          email: 'email@example.com',
-          contact: '111111',
-        },
-        notes: {
-          address: 'example address',
-        },
-        theme: {
-          color: '#80c0f0',
-        },
-      };
-
-      setLoading(false);
-      const paymentObject = new window.Razorpay(options);
-      paymentObject.open();
-      console.log(paymentObject)
-      
-
-     
-
-
-    } catch (err) {
-      alert(err);
-      setLoading(false);
-    }
-  };
-  document.body.appendChild(script);
-}
-
-
 const handleMail=async ()=>{
   console.log("hi");
   try {
@@ -135,9 +66,9 @@ console.log(res);
 
 
 
+
 const handleClick= async ()=>{
-  // loadRazorpay();
-  // handleMail();
+  handleMail();
   const response = await axios.post(`http://localhost:3001/cou/getuser`,{username:user.username});
   // console.log(response.data[0]);
   const data={
@@ -148,10 +79,16 @@ const handleClick= async ()=>{
   counseling_fee :parseInt(price)
   }
   // console.log(data);
+  console.log("hii");
   const book = await axios.post("http://localhost:3001/book/booked",{data});
   console.log(book);
-
-  navigate("/profile");
+  
+  toast.success('Thank you for booking your session with us! Your appointment request has been received and is currently pending confirmation. Please check appointment status time to time ', { position: toast.POSITION.TOP_CENTER });
+  setTimeout(() => {
+    
+    navigate('/profile');
+  }, 3000);
+ 
  
 }
 
@@ -201,52 +138,52 @@ const handleClick= async ()=>{
     <div class="container px-6 py-8 mx-auto">
 
         <div  class="grid grid-cols-1 gap-8 mt-1 lg:grid-cols-3 xl:mt-12">
-            <div onClick={()=>setPrice("0")} class="flex items-center justify-between px-8 py-4 border cursor-pointer rounded-xl dark:border-gray-700">
+            <div onClick={()=>setPrice("1")} class="flex items-center justify-between px-8 py-4 border cursor-pointer rounded-xl dark:border-gray-700">
                 <div class="flex flex-col items-center space-y-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class={price==0 ? "w-5 h-5 text-blue-600 sm:h-7 sm:w-7":"w-5 h-5 text-gray-400 sm:h-7 sm:w-7"} viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class={price==1 ? "w-5 h-5 text-blue-600 sm:h-7 sm:w-7":"w-5 h-5 text-gray-400 sm:h-7 sm:w-7"} viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                     </svg>
 
-                    <h2 class={price==0 ? "text-lg font-medium text-blue-600 sm:text-xl dark:text-blue-600" : "text-lg font-medium text-gray-400 sm:text-xl dark:text-gray-400"}>Basic</h2>
+                    <h2 class={price==1 ? "text-lg font-medium text-blue-600 sm:text-xl dark:text-blue-600" : "text-lg font-medium text-gray-400 sm:text-xl dark:text-gray-400"}>Basic</h2>
                 </div>
 
-                <h2 class={price==0 ?"text-2xl font-semibold text-blue-600 sm:text-3xl dark:text-blue-600":"text-2xl font-semibold text-gray-400 sm:text-3xl dark:text-gray-400"}>Free</h2>
+                <h2 class={price==1 ?"text-2xl font-semibold text-blue-600 sm:text-3xl dark:text-blue-600":"text-2xl font-semibold text-gray-400 sm:text-3xl dark:text-gray-400"}>$1</h2>
             </div>
 
-            <div onClick={()=>setPrice("1")} class="flex items-center justify-between px-8 py-4 border border-blue-500 cursor-pointer rounded-xl">
+            <div onClick={()=>setPrice("99")} class="flex items-center justify-between px-8 py-4 border border-blue-500 cursor-pointer rounded-xl">
                 <div class="flex flex-col items-center space-y-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class={price==1 ?"w-5 h-5 text-blue-600 dark:text-blue-600 sm:h-7 sm:w-7":"w-5 h-5 text-gray-400 dark:text-gray-400 sm:h-7 sm:w-7" }viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class={price==99 ?"w-5 h-5 text-blue-600 dark:text-blue-600 sm:h-7 sm:w-7":"w-5 h-5 text-gray-400 dark:text-gray-400 sm:h-7 sm:w-7" }viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                     </svg>
 
-                    <h2 class={price==1 ?"text-lg font-medium text-blue-600 sm:text-xl dark:text-blue-600":"text-lg font-medium text-gray-400 sm:text-xl dark:text-gray-400"}>Standard</h2>
+                    <h2 class={price==99 ?"text-lg font-medium text-blue-600 sm:text-xl dark:text-blue-600":"text-lg font-medium text-gray-400 sm:text-xl dark:text-gray-400"}>Standard</h2>
                 </div>
 
 
                 <div class="flex flex-col items-center space-y-1">
-                    <div class={price==1 ?"px-2 text-xs text-blue-600 bg-gray-100 rounded-full dark:text-blue-600 sm:px-4 sm:py-1 dark:bg-gray-700 ":"px-2 text-xs text-gray-400 bg-gray-100 rounded-full dark:text-gray-400 sm:px-4 sm:py-1 dark:bg-gray-700 "}>
+                    <div class={price==99 ?"px-2 text-xs text-blue-600 bg-gray-100 rounded-full dark:text-blue-600 sm:px-4 sm:py-1 dark:bg-gray-700 ":"px-2 text-xs text-gray-400 bg-gray-100 rounded-full dark:text-gray-400 sm:px-4 sm:py-1 dark:bg-gray-700 "}>
                         Save 30%
                     </div>
 
-                    <h2 class={price==1 ?"text-2xl font-semibold text-blue-600 dark:text-blue-600 sm:text-3xl":"text-2xl font-semibold text-gray-400 dark:text-gray-400 sm:text-3xl"}>$99 <span class="text-base font-medium"></span></h2>
+                    <h2 class={price==99 ?"text-2xl font-semibold text-blue-600 dark:text-blue-600 sm:text-3xl":"text-2xl font-semibold text-gray-400 dark:text-gray-400 sm:text-3xl"}>$99 <span class="text-base font-medium"></span></h2>
                 </div>
             </div>
 
-            <div onClick={()=>setPrice("2")}class="flex items-center justify-between px-8 py-4 border cursor-pointer rounded-xl dark:border-gray-700">
+            <div onClick={()=>setPrice("149")}class="flex items-center justify-between px-8 py-4 border cursor-pointer rounded-xl dark:border-gray-700">
                 <div class="flex flex-col items-center space-y-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class={price==2 ?"w-5 h-5 text-blue-600 sm:h-7 sm:w-7":"w-5 h-5 text-gray-400 sm:h-7 sm:w-7" }viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class={price==149 ?"w-5 h-5 text-blue-600 sm:h-7 sm:w-7":"w-5 h-5 text-gray-400 sm:h-7 sm:w-7" }viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                     </svg>
 
-                    <h2 class={price==2 ?"text-lg font-medium text-blue-600 sm:text-xl dark:text-blue-600":"text-lg font-medium text-gray-400 sm:text-xl dark:text-gray-400"}>Pro</h2>
+                    <h2 class={price==149 ?"text-lg font-medium text-blue-600 sm:text-xl dark:text-blue-600":"text-lg font-medium text-gray-400 sm:text-xl dark:text-gray-400"}>Pro</h2>
                 </div>
 
                 <div class="flex flex-col items-center space-y-1">
-                    <div class={price==2 ?"px-2 text-xs text-blue-600 bg-gray-100 rounded-full dark:text-blue-600 sm:px-4 sm:py-1 dark:bg-gray-700 ":"px-2 text-xs text-gray-400 bg-gray-100 rounded-full dark:text-gray-400 sm:px-4 sm:py-1 dark:bg-gray-700 "}>
+                    <div class={price==149 ?"px-2 text-xs text-blue-600 bg-gray-100 rounded-full dark:text-blue-600 sm:px-4 sm:py-1 dark:bg-gray-700 ":"px-2 text-xs text-gray-400 bg-gray-100 rounded-full dark:text-gray-400 sm:px-4 sm:py-1 dark:bg-gray-700 "}>
                         Save 20%
                     </div>
 
-                    <h2 class={price==2 ?"text-2xl font-semibold text-blue-600 sm:text-3xl dark:text-blue-600":"text-2xl font-semibold text-gray-400 sm:text-3xl dark:text-gray-400"}>$149 <span class="text-base font-medium"></span></h2>
+                    <h2 class={price==149 ?"text-2xl font-semibold text-blue-600 sm:text-3xl dark:text-blue-600":"text-2xl font-semibold text-gray-400 sm:text-3xl dark:text-gray-400"}>$149 <span class="text-base font-medium"></span></h2>
                 </div>
             </div>
         </div>

@@ -28,6 +28,7 @@ module.exports.Booked = async (req, res, next) => {
             (err, result) => {
               console.log(err);
               console.log(result);
+              res.status(200).json(result);
             }
           );
           
@@ -109,12 +110,9 @@ module.exports.ConfirmationMail = async (req, res) => {
     text: `
     Dear ${user.name},
     
-    We are delighted to inform you that your appointment with ${counce.name} has been successfully booked. We look forward to meeting with you on the scheduled date and time.
-    
-    Here are the details of your appointment:
-    
-    Date: ${datest}
-    Time: ${time}
+    We are delighted to inform you that your appointment with ${counce.name} has been requested.
+    Thank you for booking your session with us! Your appointment request has been received and is currently pending confirmation. Please check appointment status time to time .
+    Please Pay to avoid any delay.
       
     Meeting link will be share to you by your Councellor.
     Councellor Email:${counce.email_id}

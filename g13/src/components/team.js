@@ -1,8 +1,10 @@
 import "../pages/home.css";
 import { Link } from "react-router-dom";
 import useFetch from "../context/useFetch";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 export const Team = () => {
+ 
+     
   const {data}= useFetch('http://localhost:3001/cou/counc');
   const [id,setId]=useState(undefined);
   const handleClick=()=>{
@@ -63,7 +65,7 @@ export const Team = () => {
             src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
             alt="Person"
           /> */}
-           {cou.photo ? <><img  className="object-cover w-full h-56 md:h-64 xl:h-80" src={cou.photo}  class="rounded-circle" /></>  : <><img  className="object-cover w-full h-56 md:h-64 xl:h-80" src="https://images.pexels.com/photos/4420634/pexels-photo-4420634.jpeg?auto=compress&cs=tinysrgb&w=600"/></>}
+           {cou.photo ? <><img  className="object-cover w-full min-h-56 md:h-64 xl:h-80" src={cou.photo}   /></>  : <><img  className="object-cover w-full min-h-56 md:h-64 xl:h-80" src="https://images.pexels.com/photos/4420634/pexels-photo-4420634.jpeg?auto=compress&cs=tinysrgb&w=600"/></>}
           <div className="hid absolute inset-0 flex flex-col justify-center px-5 py-4 text-center transition-opacity duration-300 bg-black bg-opacity-75 hover:opacity-100">
             <p className="mb-1 text-lg font-bold text-gray-100">
               {cou.name}

@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import axios from 'axios';
+import  {  useState, useEffect } from "react";
 import {
   Navbar,
   Collapse,
@@ -210,6 +212,16 @@ export function NavbarWithMegaMenu() {
   const navigate = useNavigate();
   const { user, dispatch, logout } = useContext(AuthContext);
   console.log(user);
+  const [img, setImg] = useState("");
+
+  useEffect(() => {
+   const fetch=async()=>{
+       const res=await axios.post('http://localhost:3001/cou/getcounc',{id:user.id});
+       console.log(res.data[0]);
+       setImg(res.data[0].photo);
+   }
+   fetch();
+       });
   const toLogin = () => {
     navigate("/login");
   };
@@ -256,7 +268,9 @@ export function NavbarWithMegaMenu() {
             <button onMouseEnter={() =>setProfileNav(!profileNav)} onClick={() =>setProfileNav(!profileNav)} type="button" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">Open user menu</span>
-              <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt=""/>
+              {/* <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt=""/> */}
+
+              {img ?<><img class="h-8 w-8 rounded-full" src={img}/></> : <><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" class="h-8 w-8 rounded-full" /></>}
             </button>
           </div>
 

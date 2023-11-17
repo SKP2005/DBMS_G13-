@@ -48,20 +48,14 @@ function Democouns() {
               <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
               <p class="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
                 {" "}
-                Community Counseling
+                {counc?.contact_no}, {counc?.email_id}
               </p>
               <p class="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
                 Credentials: Ph.D. in Community Counseling
               </p>
 
               <p class="pt-8 text-sm">
-                Dr. Agastha is a compassionate Community Counselor with
-                extensive experience in supporting individuals and communities.
-                They provide a safe and non-judgmental space for clients to
-                address mental health concerns and work towards positive change.
-                With expertise in various counseling approaches, Dr. Agastha
-                empowers clients to gain insights, develop coping skills, and
-                achieve emotional well-being.
+              {counc?.info}
               </p>
 
               <Booking id={id}/>
@@ -71,11 +65,14 @@ function Democouns() {
           </div>
 
           <div class="w-full lg:w-2/5">
-            <img
+            {/* <img
               src="https://images.pexels.com/photos/4420634/pexels-photo-4420634.jpeg?auto=compress&cs=tinysrgb&w=600"
               class="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
               alt="bgd"
-            />
+            /> */}
+             {counc?.photo ? <><img  class="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
+              alt="bgd" src={counc?.photo}   /></>  : <><img  class=" rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
+              alt="bgd" src="https://images.pexels.com/photos/4420634/pexels-photo-4420634.jpeg?auto=compress&cs=tinysrgb&w=600"/></>}
           </div>
         </div>
       </div>

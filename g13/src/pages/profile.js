@@ -4,7 +4,9 @@ import "../components/profile.css";
 import axios from 'axios';
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 export const Profile = () => {
   const [isInputDisabled, setIsInputDisabled] = useState(true);
   const [isImageSelected, setIsImageSelected] = useState(false);
@@ -15,7 +17,42 @@ export const Profile = () => {
   const [history,setHistory]=useState(false);
   const [ide,setIde]=useState(undefined);
   const [file, setFile] = useState("");
-  console.log(user);
+  const navigate=useNavigate();
+  const [edit,setEdit]=useState({});
+  // console.log(user+"hi");
+  const [usee, setUsee] = useState("");
+  const [infoo, setInfoo] = useState({address:user.address,gender:user.gender, email:user.email_id,age:user.age,contact_no:user.contact_no,info:user.info});
+  // console.log(infoo);
+  // console.log("hello");
+ useEffect(() => {
+  const fetch=async()=>{
+      const res=await axios.post('http://localhost:3001/cou/getcounc',{id:user.id});
+      console.log(res.data[0]);
+      console.log("hiiii");
+      
+      setUsee(res?.data[0]);
+      console.log(usee);
+      // console.log(usee);
+  }
+  fetch();
+      });
+    
+      const handleChange = (e) => {
+        setInfoo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+        // console.log(infoo);
+      };
+
+     const handlesubmit1=async()=>{
+          const res= await axios.post('http://localhost:3001/cou/upcounc',{email:infoo.email,age:parseInt(infoo.age),gender:infoo.gender,contact_no:parseInt(infoo.contact_no),address:infoo.address,info:infoo.info,id:user.id});
+          console.log(res);
+          toast.success('Profile Updated', { position: toast.POSITION.TOP_CENTER });
+          setTimeout(() => {
+          
+            window.location.reload();
+          }, 1000);
+
+     } 
+
   const viewHistory = async () => {
     console.log("hi");
     const res = await axios.post('http://localhost:3001/cou/clientsAppointment', { id: user.id, is_counc: user.is_counc });
@@ -25,10 +62,21 @@ export const Profile = () => {
   const accepti=async (result)=>{
     const res = await axios.post('http://localhost:3001/cou/changestatus', { id: result.session_id, status:1  });
     console.log(result);
+    toast.info('Appointment accepted', { position: toast.POSITION.TOP_CENTER });
+    setTimeout(() => {
+    
+      window.location.reload();
+    }, 1000);
   }
   const declined=async (result)=>{
     const res = await axios.post('http://localhost:3001/cou/changestatus', { id: result.session_id, status:0  });
     console.log(result);
+    toast.info('Appointment declined', { position: toast.POSITION.TOP_CENTER });
+   
+    setTimeout(() => {
+    
+      window.location.reload();
+    }, 1000);
   }
   // const status=async(result)=>{
    
@@ -43,7 +91,12 @@ export const Profile = () => {
       loadRazorpay(result);
       // status(result);
       handleMail(result);
-     
+      // toast.success('Appointment confirmed', { position: toast.POSITION.TOP_CENTER });
+   
+      // setTimeout(() => {
+      
+      //   window.location.reload();
+      // }, 1000);
   }
        
 const loadRazorpay=(result)=> {
@@ -165,13 +218,15 @@ const SubmitImage = async(e) => {
  catch(err){
    console.log(err);
  }
-  
+ window.location.reload();
 };
 console.log(user.photo);
 
 
+
   return (
     <body>
+        <ToastContainer />
       <div class="main-content">
         <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
           <div class="container-fluid">
@@ -191,7 +246,8 @@ console.log(user.photo);
                 <a class="nav-link pr-0" href="/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div class="media align-items-center">
                     <span class="avatar avatar-sm rounded-circle">
-                      <img alt="Image placeholder" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" />
+                      {/* <img alt="Image placeholder" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" /> */}
+                      {usee.photo ?<><img src={usee.photo}/></> : <><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"  /></>}
                     </span>
                     <div class="media-body ml-2 d-none d-lg-block">
                       <span class="mb-0 text-sm  font-weight-bold">{user.username}</span>
@@ -237,7 +293,8 @@ console.log(user.photo);
               <div class="col-lg-7 col-md-10">
                 <h1 class="display-2 text-white">Hello {user.username}</h1>
                 <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
-                <a href="#!" class="btn btn-info">Edit profile</a>
+                <a href="#!" onClick={handlesubmit1} class="btn btn-info">Edit profile</a>
+                <a href="#re" class="btn btn-info">Appointments</a>
               </div>
             </div>
           </div>
@@ -255,7 +312,7 @@ console.log(user.photo);
                     <div class="card-profile-image">
                       
                       <a href="#">
-                        {user.photo ?<><img src={user.photo}/></> : <><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" class="rounded-circle" /></>}
+                        {usee.photo ?<><img src={usee.photo}/></> : <><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" class="rounded-circle" /></>}
                       </a>
                     </div>
                   </div>
@@ -268,7 +325,20 @@ console.log(user.photo);
                 </div>
                 <div class="card-body pt-0 pt-md-4">
                   <div class="row">
-                  <div className="formInput mt-5 px-2">
+                
+                  </div>
+                  <div class="text-center">
+                    <h3>
+                      {user.username}<span class="font-weight-light">, 27</span>
+                    </h3>
+                
+                    <div class="h5 font-weight-300">
+                      <i class="ni location_pin mr-2"></i>
+                    </div>
+                    <div class="h5 mt-4">
+                      <i class="ni business_briefcase-24 mr-2"></i>
+                    </div>
+                    <div className="formInput mt-5 px-2">
                 <label htmlFor="file" id= "b5b"style={{backgroundColor:'rgb(245,69,118)',color:'white', borderRadius:'5px'}} onClick={()=>{ setIsImageSelected(!isImageSelected)}}>
                 Change Image</label>
                 { isImageSelected &&
@@ -281,17 +351,6 @@ console.log(user.photo);
                   // style={{ display: "none" }}
                 />
               </div>
-                  </div>
-                  <div class="text-center">
-                    <h3>
-                      {user.username}<span class="font-weight-light">, 27</span>
-                    </h3>
-                    <div class="h5 font-weight-300">
-                      <i class="ni location_pin mr-2"></i>Bucharest, Romania
-                    </div>
-                    <div class="h5 mt-4">
-                      <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-                    </div>
                     <div>
                       <i class="ni education_hat mr-2"></i>University of Computer Science
                     </div>
@@ -322,27 +381,27 @@ console.log(user.photo);
                         <div class="col-lg-6">
                           <div class="form-group focused">
                             <label class="form-control-label" for="input-username">Username</label>
-                            <input type="text" id="input-username" class="form-control form-control-alternative" placeholder="Username" value="lucky.jesse" />
+                            <input type="text" id="input-username" class="form-control form-control-alternative disabled" placeholder={user.username}  />
                           </div>
                         </div>
                         <div class="col-lg-6">
                           <div class="form-group">
                             <label class="form-control-label" for="input-email">Email address</label>
-                            <input type="email" id="input-email" class="form-control form-control-alternative" placeholder="jesse@example.com" />
+                            <input type="email" id="email" class="form-control form-control-alternative" placeholder={usee.email_id} onChange={handleChange} value={infoo.email} />
                           </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-lg-6">
                           <div class="form-group focused">
-                            <label class="form-control-label" for="input-first-name">First name</label>
-                            <input type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="First name" value="Lucky" />
+                            <label class="form-control-label" for="input-first-name">Name</label>
+                            <input type="text" id="input-first-name" class="form-control form-control-alternative disabled" placeholder={user.name}  />
                           </div>
                         </div>
                         <div class="col-lg-6">
                           <div class="form-group focused">
-                            <label class="form-control-label" for="input-last-name">Last name</label>
-                            <input type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="Last name" value="Jesse" />
+                            <label class="form-control-label" for="input-last-name">Gender</label>
+                            <input type="text" id="gender" class="form-control form-control-alternative" placeholder={usee.gender} onChange={handleChange} value={infoo.gender}  />
                           </div>
                         </div>
                       </div>
@@ -355,29 +414,24 @@ console.log(user.photo);
                         <div class="col-md-12">
                           <div class="form-group focused">
                             <label class="form-control-label" for="input-address">Address</label>
-                            <input id="input-address" class="form-control form-control-alternative" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09" type="text" />
+                            <input id="address" class="form-control form-control-alternative" placeholder={usee.address} value={infoo.address} onChange={handleChange} type="text" />
                           </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-lg-4">
                           <div class="form-group focused">
-                            <label class="form-control-label" for="input-city">City</label>
-                            <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="City" value="New York" />
+                            <label class="form-control-label" for="input-city">Contact no</label>
+                            <input type="number" id="contact_no" class="form-control form-control-alternative" placeholder={usee.contact_no} value={infoo.contact_no} onChange={handleChange} />
                           </div>
                         </div>
                         <div class="col-lg-4">
                           <div class="form-group focused">
-                            <label class="form-control-label" for="input-country">Country</label>
-                            <input type="text" id="input-country" class="form-control form-control-alternative" placeholder="Country" value="United States" />
+                            <label class="form-control-label" for="input-country">Age</label>
+                            <input type="number" id="age" class="form-control form-control-alternative" placeholder={usee.age} value={infoo.age} onChange={handleChange} />
                           </div>
                         </div>
-                        <div class="col-lg-4">
-                          <div class="form-group">
-                            <label class="form-control-label" for="input-country">Postal code</label>
-                            <input type="number" id="input-postal-code" class="form-control form-control-alternative" placeholder="Postal code" />
-                          </div>
-                        </div>
+                      
                       </div>
                     </div>
                     <hr class="my-4" />
@@ -386,7 +440,7 @@ console.log(user.photo);
                     <div class="pl-lg-4">
                       <div class="form-group focused">
                         <label>About Me</label>
-                        <textarea rows="4" class="form-control form-control-alternative" placeholder="A few words about you ...">A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea>
+                        <textarea rows="4" class="form-control form-control-alternative" id='info' placeholder={usee.info} value={infoo.info} onChange={handleChange}></textarea>
                       </div>
                     </div>
                   </form>
@@ -399,7 +453,7 @@ console.log(user.photo);
 
 
 
-<div class='flex justify-center mt-4'>   
+<div id="re" class='flex justify-center mt-4'>   
 <button onClick={()=>{
         viewHistory();
         setHistory(!history);}} 
